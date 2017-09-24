@@ -39,6 +39,7 @@ public class StyleChecker {
         getAuthorsName(args[0]);
         CheckOptBraces.checkOptionalBraces(file);
         OperatorSpaces.checkOperatoreSpaces(file);
+        SingleLineStatments.checkSingleLineStatements(file);
         createErrorReport();
 
     }
@@ -79,6 +80,11 @@ public class StyleChecker {
                 writer.println("Line " + i + ": Expected Spaces around operator");
             }
         }
+        if (SingleLineStatments.getSingleLineStatementErrors().size() > 0) {
+            for (Integer i : SingleLineStatments.getSingleLineStatementErrors()) {
+                writer.println("Line " + i + ": Only one Statement per line allowed");
+            }
+        }
     }
 
     /**
@@ -115,18 +121,6 @@ public class StyleChecker {
     }
 
     /**
-     * Checks that there is proper spacing in 3 locations:
-     * 1. Inbetween Class definition and instance varaiables
-     * 2. Between instance variables and first method
-     * 3. Between each method
-     * If not an error will be reported at the line that was
-     * expected to be blank
-     */
-    private static void checkForCorrectSpacing(){
-
-    }
-
-    /**
      * Check that proper style casing is followed for the
      * class name, method name, and any constent variables,
      * camel casing is ignored.
@@ -145,16 +139,6 @@ public class StyleChecker {
      * an error is reported at the line it was found.
      */
     private static void checkBlockIndentation(){
-
-    }
-
-    /**
-     * Multiple lines of code is not allowed to be on a single line.
-     * This means that only one statment is allowed for a single
-     * line of code. If multiple lines of code are detected an
-     * error will be reported at that line of code.
-     */
-    private static void singleLineStatments(){
 
     }
 
