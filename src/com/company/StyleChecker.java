@@ -40,6 +40,7 @@ public class StyleChecker {
         CheckOptBraces.checkOptionalBraces(file);
         OperatorSpaces.checkOperatoreSpaces(file);
         SingleLineStatments.checkSingleLineStatements(file);
+        ToManyCharsPerLine.checkMaxLineLength(file);
         createErrorReport();
 
     }
@@ -70,19 +71,24 @@ public class StyleChecker {
 
     private static void printErrorReports(PrintWriter writer){
         if( CheckOptBraces.getBraceErrorLines().size() > 0){
-            ArrayList<Integer> listy = CheckOptBraces.getBraceErrorLines();
+            List<Integer> listy = CheckOptBraces.getBraceErrorLines();
             for(int i = 0; i < listy.size(); i++)
-            writer.println("Line " + listy.get(i) + ": Optional Brace is Required");
-            writer.println("");
+            writer.println( listy.get(i) + ": Optional Brace is Required");
         }
         if (OperatorSpaces.getOperatorErrorLine().size() > 0){
             for ( Integer i : OperatorSpaces.getOperatorErrorLine()){
-                writer.println("Line " + i + ": Expected Spaces around operator");
+                writer.println( i + ": Expected Spaces around operator");
             }
         }
         if (SingleLineStatments.getSingleLineStatementErrors().size() > 0) {
             for (Integer i : SingleLineStatments.getSingleLineStatementErrors()) {
-                writer.println("Line " + i + ": Only one Statement per line allowed");
+                writer.println( i + ": Only one Statement per line allowed");
+            }
+        }
+        if (ToManyCharsPerLine.getToManyCharErrors().size() > 0){
+            List<Integer> listy = ToManyCharsPerLine.getToManyCharErrors();
+            for (int i = 0; i < listy.size(); i++) {
+                writer.println( listy.get(i) + ": To many Characters on this line");
             }
         }
     }
@@ -149,17 +155,6 @@ public class StyleChecker {
      * statments and all loops
      */
     private static void checkBraceAlignment(){
-
-    }
-
-    /**
-     * Per "The Elements of Java Stlye" a lline should have no
-     * more then 80 or 132 char's per line. For this assignment
-     * will restrict the max line length to 80 chars. If a line
-     * exceds this number of chars a error will be reported
-     * at that line.
-     */
-    private static void checkMaxLineLength(){
 
     }
 }

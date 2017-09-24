@@ -2,11 +2,12 @@ package com.company;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CheckOptBraces {
 
-    private static ArrayList<Integer> braceErrorLines = new ArrayList<>();
+    private static List<Integer> braceErrorLines = new ArrayList<>();
 
     /**
      * Check that the char following the closing
@@ -80,7 +81,7 @@ public class CheckOptBraces {
      * Getter for Arraylist of errors
      * @return ArrayList that consists of the lines that hard errors on them
      */
-    public static ArrayList<Integer> getBraceErrorLines(){
+    public static List<Integer> getBraceErrorLines(){
         return braceErrorLines;
     }
 }
