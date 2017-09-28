@@ -127,17 +127,6 @@ public class StyleChecker {
     }
 
     /**
-     * Check that proper style casing is followed for the
-     * class name, method name, and any constent variables,
-     * camel casing is ignored.
-     * If any casing errors are found the error should be
-     * reported on the line the error is found on.
-     */
-    private static void checkcorrectCasing(){
-
-    }
-
-    /**
      * Block indentation for all class body, method body,
      * loop bods, if/else bodys, and declerations (instance level)
      * should be indedented exactly 3 spaces from the lvel above them.
