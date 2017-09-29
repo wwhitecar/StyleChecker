@@ -1,14 +1,11 @@
 package com.company;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class OperatorSpaces {
 
-    private static Set<Integer> operatorErrorLine = new HashSet<>();
+    private static List<Integer> operatorErrorLine = new ArrayList<>();
 
     /**
      * Check for exactly one space around arithmetic operatoins
@@ -49,7 +46,8 @@ public class OperatorSpaces {
      */
     private static void checkPlusOperator(String currentLine, int lineNumber){
 
-        if(currentLine.contains("++") && currentLine.indexOf("++") == currentLine.indexOf('+') ) {
+        if(currentLine.contains("++") && currentLine.indexOf("++")
+                == currentLine.indexOf('+') ) {
             currentLine = currentLine.substring(currentLine.indexOf('+') + 2);
         }
 
@@ -57,7 +55,8 @@ public class OperatorSpaces {
             int p = currentLine.indexOf("+");
             Character inFront = currentLine.charAt( p - 1);
             Character behind = currentLine.charAt( p + 1);
-            if (!inFront.equals(' ') || !behind.equals(' ') || behind.equals('+') ) {
+            if (!inFront.equals(' ') || !behind.equals(' ')
+                    || behind.equals('+') ) {
                 operatorErrorLine.add(lineNumber);
             }
             else {
@@ -71,7 +70,8 @@ public class OperatorSpaces {
      * @param currentLine - string that we are checking for correct spacing
      * @param lineNumber - the current line number
      */
-    private static void checkMinusOperator(String currentLine, int lineNumber){
+    private static void checkMinusOperator(String currentLine,
+                                           int lineNumber){
 
         if(currentLine.contains("--") && currentLine.indexOf("--") == currentLine.indexOf('-') ){
             currentLine = currentLine.substring(currentLine.indexOf('-') + 2);
@@ -97,7 +97,8 @@ public class OperatorSpaces {
      * @param currentLine - the current line we are checking
      * @param lineNumber - line number of the line we are currently checking
      */
-    private static void checkDivisionOperator(String currentLine, int lineNumber){
+    private static void checkDivisionOperator(String currentLine,
+                                              int lineNumber){
 
         if( needToCheckDivision(currentLine)) {
             int j = currentLine.indexOf("/");
@@ -122,8 +123,7 @@ public class OperatorSpaces {
     private static boolean needToCheckDivision(String currentLine){
         boolean answer = false;
         if( !currentLine.contains("//") && !currentLine.trim().startsWith("/*")
-                && currentLine.contains("/")
-                && !currentLine.trim().equals("*/")) {
+             && currentLine.contains("/")&& !currentLine.trim().equals("*/")) {
             answer = true;
         }
         return answer;
@@ -135,7 +135,8 @@ public class OperatorSpaces {
      * @param currentLine - string we are checking for mulitplication errors
      * @param lineNumber - the current line we are working with.
      */
-    private static void checkMultiplicationOperator(String currentLine, int lineNumber){
+    private static void checkMultiplicationOperator(String currentLine,
+                                                    int lineNumber){
 
         if ( needToCheckMultiplication( currentLine)) {
             int i = currentLine.indexOf("*");
@@ -145,14 +146,16 @@ public class OperatorSpaces {
                 operatorErrorLine.add(lineNumber);
             }
             else {
-                checkMultiplicationOperator(currentLine.substring(i + 2), lineNumber);
+                checkMultiplicationOperator(currentLine.substring(i + 2),
+                        lineNumber);
             }
         }
     }
 
     /**
-     * Helper function to check if we need that checks all the cases that would require
-     * use to check a line for correct spacing around multiple symbole.
+     * Helper function to check if we need that checks all the cases that
+     * would requireuse to check a line for correct spacing around multiple
+     * symbol.
      * @param currentLine - current string that we are working with
      * @return true if we need to check the currentline; false otherwise
      */
@@ -206,8 +209,23 @@ public class OperatorSpaces {
      * Getter for operatorErrorLine.
      * @return Set<Interger> - returns the set that has line errors on it.
      */
-    public static Set<Integer> getOperatorErrorLine(){
+    public static List<Integer> getOperatorErrorLine(){
 
+        removeDups();
         return operatorErrorLine;
+    }
+
+    /**
+     * Removes duplicates from the arrayList
+     */
+    private static void removeDups(){
+        for (int i = 0; i < operatorErrorLine.size(); i ++){
+            for (int j = i + 1; j < operatorErrorLine.size(); j++){
+                if (operatorErrorLine.get(i) == operatorErrorLine.get(j)){
+                    operatorErrorLine.remove(j);
+                    j--;
+                }
+            }
+        }
     }
 }

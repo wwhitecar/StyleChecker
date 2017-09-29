@@ -41,7 +41,6 @@ public class StyleChecker {
         OperatorSpaces.checkOperatoreSpaces(file);
         SingleLineStatments.checkSingleLineStatements(file);
         ToManyCharsPerLine.checkMaxLineLength(file);
-        CheckCorrectCasing.checkForCasingErrors(file);
         createErrorReport();
 
     }
@@ -71,36 +70,27 @@ public class StyleChecker {
     }
 
     private static void printErrorReports(PrintWriter writer){
-	    List<Integer> listy;
         if( CheckOptBraces.getBraceErrorLines().size() > 0){
-            listy = CheckOptBraces.getBraceErrorLines();
+            List<Integer> listy = CheckOptBraces.getBraceErrorLines();
             for(int i = 0; i < listy.size(); i++)
             writer.println( listy.get(i) + ": Optional Brace is Required");
         }
         if (OperatorSpaces.getOperatorErrorLine().size() > 0){
-	    listy = OperatorSpaces.getOperatorErrorLine();
-            for (int i = 0; i < listy.size(); i++){
-                writer.println( listy.get(i) + ": Expected Spaces around operator");
+            for ( Integer i : OperatorSpaces.getOperatorErrorLine()){
+                writer.println( i + ": Expected Spaces around operator");
             }
         }
         if (SingleLineStatments.getSingleLineStatementErrors().size() > 0) {
-	    listy = SingleLineStatments.getSingleLineStatementErrors();
-            for (int i = 00; i < listy.size(); i++) {
-                writer.println( listy.get(i) + ": Only one Statement per line allowed");
+            for (Integer i : SingleLineStatments.getSingleLineStatementErrors()) {
+                writer.println( i + ": Only one Statement per line allowed");
             }
         }
         if (ToManyCharsPerLine.getToManyCharErrors().size() > 0){
-            listy = ToManyCharsPerLine.getToManyCharErrors();
+            List<Integer> listy = ToManyCharsPerLine.getToManyCharErrors();
             for (int i = 0; i < listy.size(); i++) {
                 writer.println( listy.get(i) + ": To many Characters on this line");
             }
         }
-	if (!CheckCorrectCasing.getCasingErrorList().isEmpty()){
-	   listy = CheckCorrectCasing.getCasingErrorList();
-	   for (int i = 0; i < listy.size(); i++){
-	      writer.println (listy.get(i) + ": Java Style Casing Error");
-	   } 
-	}
     }
 
     /**

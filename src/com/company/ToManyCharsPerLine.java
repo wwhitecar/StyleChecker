@@ -68,6 +68,21 @@ public class ToManyCharsPerLine {
      * @return the list of errors
      */
     public static List<Integer> getToManyCharErrors(){
+        removeDups();
         return toManyCharErorrs;
+    }
+
+    /**
+     * Removes duplicates from the arrayList
+     */
+    private static void removeDups(){
+        for (int i = 0; i < toManyCharErorrs.size(); i ++){
+            for (int j = i + 1; j < toManyCharErorrs.size(); j++){
+                if (toManyCharErorrs.get(i) == toManyCharErorrs.get(j)){
+                    toManyCharErorrs.remove(j);
+                    j--;
+                }
+            }
+        }
     }
 }

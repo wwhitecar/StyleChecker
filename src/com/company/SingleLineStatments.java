@@ -1,9 +1,7 @@
 package com.company;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Multiple lines of code is not allowed to be on a single line.
@@ -16,7 +14,7 @@ public class SingleLineStatments {
     /**
      * Keeps track of all lines that contain errors
      */
-    private static Set<Integer> singleLineStatementErrors = new HashSet<>();
+    private static List<Integer> singleLineStatementErrors = new ArrayList<>();
 
     /**
      * Makes sure there is only one statement per line for readability.
@@ -66,7 +64,22 @@ public class SingleLineStatments {
      * Getter for the error list.
      * @return the set of errrors.
      */
-    public static Set<Integer> getSingleLineStatementErrors() {
+    public static List<Integer> getSingleLineStatementErrors() {
+        removeDups();
         return singleLineStatementErrors;
+    }
+
+    /**
+     * Removes duplicates from the arrayList
+     */
+    private static void removeDups(){
+        for (int i = 0; i < singleLineStatementErrors.size(); i ++){
+            for (int j = i + 1; j < singleLineStatementErrors.size(); j++){
+                if (singleLineStatementErrors.get(i) == singleLineStatementErrors.get(j)){
+                    singleLineStatementErrors.remove(j);
+                    j--;
+                }
+            }
+        }
     }
 }

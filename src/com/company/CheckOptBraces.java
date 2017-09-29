@@ -71,7 +71,8 @@ public class CheckOptBraces {
         if (currentLine.contains("if (") || currentLine.contains("if(") ||
                 currentLine.contains("else") ||
                 currentLine.contains("for (") || currentLine.contains("for(") ||
-                currentLine.contains("while (") || currentLine.contains("while(")){
+                currentLine.contains("while (") ||
+                currentLine.contains("while(")){
             answer = true;
         }
         return answer;
@@ -82,6 +83,21 @@ public class CheckOptBraces {
      * @return ArrayList that consists of the lines that hard errors on them
      */
     public static List<Integer> getBraceErrorLines(){
+        removeDups();
         return braceErrorLines;
+    }
+
+    /**
+     * Removes duplicates from the arrayList
+     */
+    private static void removeDups(){
+        for (int i = 0; i < braceErrorLines.size(); i ++){
+            for (int j = i + 1; j < braceErrorLines.size(); j++){
+                if (braceErrorLines.get(i) == braceErrorLines.get(j)){
+                    braceErrorLines.remove(j);
+                    j--;
+                }
+            }
+        }
     }
 }

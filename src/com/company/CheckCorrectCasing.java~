@@ -87,9 +87,7 @@ public class CheckCorrectCasing {
                           currentLine.contains("double") ||
                           currentLine.contains("float"))) {
                     
-           //TODO: Check if there is an = and move to the left side of it
-	   //before we do checks
-	  // if ()
+
             String[] wordArray =  currentLine.split(" ");
             String lastWord = wordArray[wordArray.length - 1];
             if (!lastWord.equals(lastWord.toUpperCase())){
