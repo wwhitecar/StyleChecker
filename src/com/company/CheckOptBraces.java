@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class CheckOptBraces {
 
     private static List<Integer> braceErrorLines = new ArrayList<>();
+    private static int lineCounter = 0;
 
     /**
      * Check that the char following the closing
@@ -19,7 +20,6 @@ public class CheckOptBraces {
     public static void checkOptionalBraces(File file){
         Scanner scanner = getScanner(file);
         String currentLine = scanner.nextLine();
-        int lineCounter = 0;
 
         if(currentLine.startsWith("/*")) {
             while (!currentLine.trim().startsWith("*/")) {
@@ -30,20 +30,30 @@ public class CheckOptBraces {
 
         while(scanner.hasNext()) {
             while (checkForIfElseForWhile(currentLine)) {
-                if (scanner.hasNext() && !currentLine.contains("{")) {
-                    currentLine = scanner.nextLine();
-                    lineCounter++;
-                }
-                if (!currentLine.contains("{")) {
-                    braceErrorLines.add(lineCounter);
-                }
-                currentLine = scanner.nextLine();
-                lineCounter++;
+                lineCounter = checkForBraces(currentLine, scanner);
+                break;
             }
             currentLine = scanner.nextLine();
             lineCounter++;
         }
         scanner.close();
+    }
+
+    private static int checkForBraces(String currentLine, Scanner scanner){
+        boolean checkNextLine = false;
+        if (scanner.hasNext() && !currentLine.contains("{")) {
+            currentLine = scanner.nextLine();
+            lineCounter++;
+            checkNextLine = true;
+        }
+        if (!currentLine.contains ("{")) {
+            braceErrorLines.add(lineCounter);
+            if(checkNextLine && checkForIfElseForWhile(currentLine)) {
+                checkForBraces(currentLine, scanner);
+            }
+            return lineCounter;
+        }
+        return lineCounter;
     }
 
     /**

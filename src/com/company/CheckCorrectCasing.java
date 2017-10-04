@@ -49,20 +49,26 @@ public class CheckCorrectCasing {
 			     || currentLine.contains("private"))
                              || currentLine.contains("void")
                              || currentLine.contains("static")){
-	        String[] words  = currentLine.split(" ");
-	        String methodName = null;
-	        for (int i = 0; i < words.length; i++){
-	            if (words[i].contains("(")){
-		            if(words[i].equals("(")){
-                        methodName = words[i - 1];
-			             i = words.length;
+
+                if (currentLine.contains("=")){
+                    int location = currentLine.indexOf("=");
+                    currentLine = currentLine.substring( 0, location - 1);
+                }
+	            String[] words  = currentLine.split(" ");
+	            String methodName = null;
+	            for (int i = 0; i < words.length; i++){
+	                if (words[i].contains("(")){
+		                if(words[i].equals("(")){
+                            methodName = words[i - 1];
+                            i = words.length;
+		                }
+		            else {
+		                methodName = words[i];
+                        i = words.length;
 		            }
-		             else {
-		                 methodName = words[i];
-                         i = words.length;
-		             }
                     String firstChar = methodName.charAt(0) + ("");
                     if (!firstChar.equals(firstChar.toLowerCase())){
+                        System.out.println(currentLine);
                         casingErrorList.add(lineCounter);
                     }
 		        }
@@ -79,17 +85,12 @@ public class CheckCorrectCasing {
      * @param lineCounter - number of ht line we are currently checking
      */
     private static void checkConstentCasing(String currentLine, int lineCounter){
-        if (currentLine.contains("final") &&
-                    (currentLine.contains("public") ||
-                          currentLine.contains("private") ||
-                          currentLine.contains("String") ||
-                          currentLine.contains("int") ||
-                          currentLine.contains("double") ||
-                          currentLine.contains("float"))) {
-                    
-           //TODO: Check if there is an = and move to the left side of it
-	   //before we do checks
-	  // if ()
+        if (currentLine.contains("final") && !currentLine.contains("System.out.println")) {
+
+	    if (currentLine.contains("=")){
+	        int location = currentLine.indexOf("=");
+            currentLine = currentLine.substring( 0, location - 1);
+        }
             String[] wordArray =  currentLine.split(" ");
             String lastWord = wordArray[wordArray.length - 1];
             if (!lastWord.equals(lastWord.toUpperCase())){
@@ -111,9 +112,14 @@ public class CheckCorrectCasing {
 			     || currentLine.contains("private")
 			     || currentLine.contains("{")
 			     || currentLine.contains("static"))){
-			     
+
 	    String[] wordArray = currentLine.trim().split(" ");
 	    String lastWord = wordArray[wordArray.length -1];
+
+	    if (lastWord.equals("{")){
+	        lastWord = wordArray[wordArray.length - 2];
+        }
+
 	    String firstChar = lastWord.charAt(0) + "";
 	    if (!firstChar.equals(firstChar.toUpperCase())){
 	       casingErrorList.add(lineCounter);
