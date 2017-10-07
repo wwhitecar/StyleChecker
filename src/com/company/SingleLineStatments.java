@@ -65,21 +65,6 @@ public class SingleLineStatments {
      * @return the set of errrors.
      */
     public static List<Integer> getSingleLineStatementErrors() {
-        removeDups();
         return singleLineStatementErrors;
-    }
-
-    /**
-     * Removes duplicates from the arrayList
-     */
-    private static void removeDups(){
-        for (int i = 0; i < singleLineStatementErrors.size(); i ++){
-            for (int j = i + 1; j < singleLineStatementErrors.size(); j++){
-                if (singleLineStatementErrors.get(i) == singleLineStatementErrors.get(j)){
-                    singleLineStatementErrors.remove(j);
-                    j--;
-                }
-            }
-        }
     }
 }

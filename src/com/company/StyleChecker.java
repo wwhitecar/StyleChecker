@@ -42,6 +42,7 @@ public class StyleChecker {
         SingleLineStatments.checkSingleLineStatements(file);
         ToManyCharsPerLine.checkMaxLineLength(file);
         CheckCorrectCasing.checkForCasingErrors(file);
+        BlankLineSpacing.checkForCorrectSpacing(file);
         createErrorReport();
 
     }
@@ -74,33 +75,52 @@ public class StyleChecker {
 	    List<Integer> listy;
         if( CheckOptBraces.getBraceErrorLines().size() > 0){
             listy = CheckOptBraces.getBraceErrorLines();
+            removeDups(listy);
             for(int i = 0; i < listy.size(); i++)
-            writer.println( listy.get(i) + ": Optional Brace is Required");
+            writer.println("Line " +listy.get(i) + ": Optional Brace is Required");
         }
         if (OperatorSpaces.getOperatorErrorLine().size() > 0){
-	    listy = OperatorSpaces.getOperatorErrorLine();
+	        listy = OperatorSpaces.getOperatorErrorLine();
+            removeDups(listy);
             for (int i = 0; i < listy.size(); i++){
-                writer.println( listy.get(i) + ": Expected Spaces around operator");
+                writer.println("Line " +listy.get(i) + ": Expected Spaces around operator");
             }
         }
         if (SingleLineStatments.getSingleLineStatementErrors().size() > 0) {
-	    listy = SingleLineStatments.getSingleLineStatementErrors();
+	        listy = SingleLineStatments.getSingleLineStatementErrors();
+            removeDups(listy);
             for (int i = 00; i < listy.size(); i++) {
-                writer.println( listy.get(i) + ": Only one Statement per line allowed");
+                writer.println("Line " +listy.get(i) + ": Only one Statement per line allowed");
             }
         }
         if (ToManyCharsPerLine.getToManyCharErrors().size() > 0){
             listy = ToManyCharsPerLine.getToManyCharErrors();
+            removeDups(listy);
             for (int i = 0; i < listy.size(); i++) {
-                writer.println( listy.get(i) + ": To many Characters on this line");
+                writer.println( "Line " +listy.get(i) + ": To many Characters on this line");
             }
         }
-	if (!CheckCorrectCasing.getCasingErrorList().isEmpty()){
-	   listy = CheckCorrectCasing.getCasingErrorList();
-	   for (int i = 0; i < listy.size(); i++){
-	      writer.println (listy.get(i) + ": Java Style Casing Error");
-	   } 
-	}
+        if (!CheckCorrectCasing.getCasingErrorList().isEmpty()){
+	        listy = CheckCorrectCasing.getCasingErrorList();
+            removeDups(listy);
+	        for (int i = 0; i < listy.size(); i++){
+	            writer.println ("Line " +listy.get(i) + ": Java Style Casing Error");
+	        }
+        }
+        if(!BlankLineSpacing.getMissingBlankLines().isEmpty()){
+            listy = BlankLineSpacing.getMissingBlankLines();
+            removeDups(listy);
+            for (int i = 0; i < listy.size(); i++){
+                writer.println("Line " +listy.get(i) + ": Expected Blank Line");
+            }
+        }
+        if (!BlankLineSpacing.getToManyBlankLines().isEmpty()){
+            listy = BlankLineSpacing.getToManyBlankLines();
+            removeDups(listy);
+            for (int i = 0; i < listy.size(); i++){
+                writer.println("Line " + listy.get(i) + ": Excessive Blank Lines");
+            }
+        }
     }
 
     /**
@@ -134,6 +154,20 @@ public class StyleChecker {
         }
         currentLine = scanner.nextLine();
         checkedErrors = currentLine.trim();
+    }
+
+    /**
+     * Removes duplicates from the arrayList
+     */
+    private static void removeDups(List<Integer> listy){
+        for (int i = 0; i < listy.size(); i ++){
+            for (int j = i + 1; j < listy.size(); j++){
+                if (listy.get(i) == listy.get(j)){
+                    listy.remove(j);
+                    j--;
+                }
+            }
+        }
     }
 
     /**

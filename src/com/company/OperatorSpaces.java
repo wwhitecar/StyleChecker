@@ -210,22 +210,6 @@ public class OperatorSpaces {
      * @return Set<Interger> - returns the set that has line errors on it.
      */
     public static List<Integer> getOperatorErrorLine(){
-
-        removeDups();
         return operatorErrorLine;
-    }
-
-    /**
-     * Removes duplicates from the arrayList
-     */
-    private static void removeDups(){
-        for (int i = 0; i < operatorErrorLine.size(); i ++){
-            for (int j = i + 1; j < operatorErrorLine.size(); j++){
-                if (operatorErrorLine.get(i) == operatorErrorLine.get(j)){
-                    operatorErrorLine.remove(j);
-                    j--;
-                }
-            }
-        }
     }
 }

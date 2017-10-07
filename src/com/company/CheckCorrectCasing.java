@@ -147,21 +147,8 @@ public class CheckCorrectCasing {
      * @return list containing the line number for errors
      */
     public static List<Integer> getCasingErrorList() {
-        removeDups();
         return casingErrorList;
     }
 
-    /**
-     * Removes duplicates from the arrayList
-     */
-    private static void removeDups(){
-        for (int i = 0; i < casingErrorList.size(); i ++){
-            for (int j = i + 1; j < casingErrorList.size(); j++){
-                if (casingErrorList.get(i) == casingErrorList.get(j)){
-                    casingErrorList.remove(j);
-                    j--;
-                }
-            }
-        }
-    }
+
 }
