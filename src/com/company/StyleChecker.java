@@ -109,7 +109,7 @@ public class StyleChecker {
         }
         if(!BlankLineSpacing.getMissingBlankLines().isEmpty()){
             listy = BlankLineSpacing.getMissingBlankLines();
-            removeDups(listy);
+            //removeDups(listy);
             for (int i = 0; i < listy.size(); i++){
                 writer.println("Line " +listy.get(i) + ": Expected Blank Line");
             }

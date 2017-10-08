@@ -50,46 +50,52 @@ public class BlankLineSpacing {
             lineCounter++;
 
             checkClassVarBlankLine(scanner);
+            checkBetweenMethodBlankLines(scanner);
 
-            if ((currentLine.contains("(") && currentLine.contains(")")
-                    && !currentLine.contains(";") && !currentLine.contains("class")) &&
-                    (currentLine.contains("public") || currentLine.contains("private")
-                    || currentLine.contains("void") || currentLine.contains("String")
-                    || currentLine.contains("static") || currentLine.contains("int")
-                    || currentLine.contains("double") || currentLine.contains("float")
-                    )) {
-
-                while (!currentLine.contains("{")) {
-                    currentLine = scanner.nextLine();
-                    lineCounter++;
-                }
-                currentLine = scanner.nextLine();
-                lineCounter++;
-                int braceCounter = 1;
-                while (braceCounter != 0) {
-                    currentLine = scanner.nextLine();
-                    lineCounter++;
-                    if (currentLine.contains("{")) {
-                        braceCounter++;
-                    }
-                    if (currentLine.contains("}")) {
-                        braceCounter--;
-                    }
-                }
-                System.out.println(currentLine + lineCounter);
-                currentLine = scanner.nextLine();
-                lineCounter++;
-                if(!currentLine.trim().isEmpty()){
-                    missingBlankLines.add(lineCounter);
-                }
-                else{
-                    checkForToManySpaces(scanner);
-                }
-            }
             //TODO:Blank line between methods and variables
         }
 
         scanner.close();
+    }
+
+    /**
+     * Checks for blank lines between methods
+     */
+    private static void checkBetweenMethodBlankLines(Scanner scanner){
+        if ((currentLine.contains("(") && currentLine.contains(")")
+                && !currentLine.contains(";") && !currentLine.contains("class")) &&
+                (currentLine.contains("public") || currentLine.contains("private")
+                        || currentLine.contains("void") || currentLine.contains("String")
+                        || currentLine.contains("static") || currentLine.contains("int")
+                        || currentLine.contains("double") || currentLine.contains("float")
+                )) {
+
+            while (!currentLine.contains("{")){
+                currentLine = scanner.nextLine();
+                lineCounter++;
+            }
+
+            int braceCounter = 1;
+            while (braceCounter != 0){
+                currentLine = scanner.nextLine();
+                lineCounter++;
+                if (currentLine.contains("{")){
+                    braceCounter++;
+                }
+                if (currentLine.contains("}")){
+                    braceCounter--;
+                }
+            }
+            currentLine = scanner.nextLine();
+            lineCounter++;
+            if(!currentLine.trim().isEmpty()){
+                missingBlankLines.add(lineCounter);
+                checkBetweenMethodBlankLines(scanner);
+            }
+            else{
+                checkForToManySpaces(scanner);
+            }
+        }
     }
 
     /**
@@ -122,6 +128,9 @@ public class BlankLineSpacing {
         lineCounter++;
         if (currentLine.trim().isEmpty()){
             toManyBlankLines.add(lineCounter);
+        }
+        else {
+            checkBetweenMethodBlankLines(scanner);
         }
     }
 
