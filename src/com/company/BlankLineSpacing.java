@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class BlankLineSpacing {
 
     private static int lineCounter = 0;
+    private static String currentLine = "";
     /**
      * List that will keep track of the the lines that are
      * exected to be blank but are not.
@@ -34,7 +35,7 @@ public class BlankLineSpacing {
      */
     public static void checkForCorrectSpacing(File file){
         Scanner scanner = getScanner(file);
-        String currentLine = scanner.nextLine();
+        currentLine = scanner.nextLine();
         lineCounter = 1;
 
         if(currentLine.startsWith("/*")) {
@@ -48,39 +49,41 @@ public class BlankLineSpacing {
             currentLine = scanner.nextLine();
             lineCounter++;
 
-            checkClassVarBlankLine(currentLine, lineCounter, scanner);
+            checkClassVarBlankLine(scanner);
 
+            if ((currentLine.contains("(") && currentLine.contains(")")
+                    && !currentLine.contains(";") && !currentLine.contains("class")) &&
+                    (currentLine.contains("public") || currentLine.contains("private")
+                    || currentLine.contains("void") || currentLine.contains("String")
+                    || currentLine.contains("static") || currentLine.contains("int")
+                    || currentLine.contains("double") || currentLine.contains("float")
+                    )) {
 
-            if (currentLine.contains("public") || currentLine.contains("private")
-                    || currentLine.contains("void")
-                    || currentLine.contains("static") &&
-                    (currentLine.contains("(") && currentLine.contains(")"))) {
-                System.out.println(lineCounter);
-                int braceCounter = 1;
-                if (!currentLine.contains("{")) {
-                    while (!currentLine.contains("{") && scanner.hasNext()) {
-                        currentLine = scanner.nextLine();
-                        lineCounter++;
-                    }
-                    while (braceCounter != 0) {
-                        currentLine = scanner.nextLine();
-                        lineCounter++;
-                        if (currentLine.contains("{")) {
-                            braceCounter++;
-                        }
-                        if (currentLine.contains("}")) {
-                            braceCounter--;
-                        }
-                    }
+                while (!currentLine.contains("{")) {
                     currentLine = scanner.nextLine();
                     lineCounter++;
-                    if(!currentLine.trim().isEmpty()){
-                        System.out.println("added here" + lineCounter+ currentLine);
-                        missingBlankLines.add(lineCounter);
+                }
+                currentLine = scanner.nextLine();
+                lineCounter++;
+                int braceCounter = 1;
+                while (braceCounter != 0) {
+                    currentLine = scanner.nextLine();
+                    lineCounter++;
+                    if (currentLine.contains("{")) {
+                        braceCounter++;
                     }
-                    else{
-                        checkForToManySpaces(currentLine, lineCounter, scanner);
+                    if (currentLine.contains("}")) {
+                        braceCounter--;
                     }
+                }
+                System.out.println(currentLine + lineCounter);
+                currentLine = scanner.nextLine();
+                lineCounter++;
+                if(!currentLine.trim().isEmpty()){
+                    missingBlankLines.add(lineCounter);
+                }
+                else{
+                    checkForToManySpaces(scanner);
                 }
             }
             //TODO:Blank line between methods and variables
@@ -93,18 +96,19 @@ public class BlankLineSpacing {
      * Checks that after a class is declared the line following it
      * will be a blank line before variables or methods.
      */
-    private static void checkClassVarBlankLine(String currentLine,
-                                               int lineCounter, Scanner scanner){
+    private static void checkClassVarBlankLine(Scanner scanner){
         if (currentLine.contains("class")) {
-            if(currentLine.contains("{")) {
+            while (!currentLine.contains("{")) {
                 currentLine = scanner.nextLine();
                 lineCounter++;
-                if (!currentLine.trim().isEmpty()) {
-                    missingBlankLines.add(lineCounter);
-                }
+            }
+            currentLine = scanner.nextLine();
+            lineCounter++;
+            if (!currentLine.trim().isEmpty()) {
+                missingBlankLines.add(lineCounter);
             }
             else {
-                checkForToManySpaces(currentLine, lineCounter, scanner);
+                checkForToManySpaces(scanner);
             }
         }
     }
@@ -112,22 +116,12 @@ public class BlankLineSpacing {
     /**
      * Check if we have to many spaces in a location
      */
-    private static void checkForToManySpaces(String currentLine, int lineCounter, Scanner scanner){
-        while (!currentLine.contains("{") && scanner.hasNext()) {
-            currentLine = scanner.nextLine();
-            lineCounter++;
-        }
+    private static void checkForToManySpaces(Scanner scanner){
+
         currentLine = scanner.nextLine();
         lineCounter++;
-        if (!currentLine.trim().isEmpty()){
-            missingBlankLines.add(lineCounter);
-        }
-        else {
-            currentLine = scanner.nextLine();
-            lineCounter++;
-            if (currentLine.trim().isEmpty()){
-                toManyBlankLines.add(lineCounter);
-            }
+        if (currentLine.trim().isEmpty()){
+            toManyBlankLines.add(lineCounter);
         }
     }
 
