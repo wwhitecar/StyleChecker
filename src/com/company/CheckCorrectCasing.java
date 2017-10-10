@@ -68,7 +68,6 @@ public class CheckCorrectCasing {
 		            }
                     String firstChar = methodName.charAt(0) + ("");
                     if (!firstChar.equals(firstChar.toLowerCase())){
-                        System.out.println(currentLine);
                         casingErrorList.add(lineCounter);
                     }
 		        }

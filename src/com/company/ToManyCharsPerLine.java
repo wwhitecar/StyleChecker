@@ -19,6 +19,9 @@ public class ToManyCharsPerLine {
      */
     private static List<Integer> toManyCharErorrs = new ArrayList<>();
 
+    /**
+     * Maximum line length for each line of code.
+     */
     private static final int MAXLENGTH = 80;
 
     /**

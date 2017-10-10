@@ -1,6 +1,7 @@
 package com.company;
 
 import com.sun.javaws.exceptions.InvalidArgumentException;
+import jdk.nashorn.internal.ir.Block;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class StyleChecker {
         ToManyCharsPerLine.checkMaxLineLength(file);
         CheckCorrectCasing.checkForCasingErrors(file);
         BlankLineSpacing.checkForCorrectSpacing(file);
+        BlockIndentation.checkBlockIndentation(file);
         createErrorReport();
 
     }
@@ -121,6 +123,13 @@ public class StyleChecker {
                 writer.println("Line " + listy.get(i) + ": Excessive Blank Lines");
             }
         }
+        if (!BlockIndentation.getBlockIndentationError().isEmpty()){
+            listy = BlockIndentation.getBlockIndentationError();
+            removeDups(listy);
+            for (int i = 0; i < listy.size(); i++){
+                writer.println("Line " + listy.get(i) + ": Incorrect Indentation");
+            }
+        }
     }
 
     /**
@@ -168,17 +177,6 @@ public class StyleChecker {
                 }
             }
         }
-    }
-
-    /**
-     * Block indentation for all class body, method body,
-     * loop bods, if/else bodys, and declerations (instance level)
-     * should be indedented exactly 3 spaces from the lvel above them.
-     * No tabs (they are evil). if incorrect indentation is found
-     * an error is reported at the line it was found.
-     */
-    private static void checkBlockIndentation(){
-
     }
 
     /**

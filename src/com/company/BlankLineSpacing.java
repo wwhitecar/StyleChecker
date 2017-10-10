@@ -109,6 +109,11 @@ public class BlankLineSpacing {
         }
     }
 
+    /**
+     * Checks if the currentLine is a method deceleration.
+     * @param currentLine current string we are working with
+     * @return true if method deceleration; flase otherwise
+     */
     private static boolean checkerForMethod(String currentLine){
         boolean answer = false;
         if ((currentLine.contains("(") && currentLine.contains(")")
